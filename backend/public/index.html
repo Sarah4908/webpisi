@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Monitoring Dashboard</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- Google Font -->
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link rel="stylesheet" href="style.css">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="script.js" defer></script>
+
+
+</head>
+
+<body>
+
+<div class="container">
+
+    <!-- SIDEBAR -->
+    <div class="sidebar">
+        <h2>AQUASTASIS</h2>
+        <a class="active">Dashboard</a>
+        <a>Thresholds</a>
+        <a>Reports</a>
+        <a>Settings</a>
+        <!-- SOCIAL ICONS -->
+        <div class="social-icons">
+            <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+            <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+            <a href="#" aria-label="Twitter"><i class="fab fa-x-twitter"></i></a>
+        </div>
+
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div class="main">
+
+        <!-- TOP CARDS -->
+        <div class="cards">
+            <div class="card">
+                <h3>pH Level</h3>
+                <p id="phValue">--</p>
+                <span id="phStatus">--</span>
+            </div>
+            <div class="card">
+                <h3>Temperature</h3>
+                <p id="tempValue">--</p>
+                <span id="tempStatus">--</span>
+            </div>
+            <div class="card">
+                <h3>Water Level</h3>
+                <p id="waterValue">--</p>
+                <span id="waterStatus">--</span>
+            </div>
+     </div>
+
+        <!-- MIDDLE GRID -->
+        <div class="grid">
+
+            <!-- LEFT : LIVE INFORMATION -->
+            <div class="chart">
+                <h3>Live Information</h3>
+                
+                <canvas id="dashboardChart" width="400" height="200"></canvas>
+                
+                    
+            </div>
+
+            <!-- RIGHT : PLANT HEALTH -->
+            <div class="plant-status">
+                <h3 style="font-size: 30px;font-weight: 500;">Plant Health</h3>
+                <div style="position: relative; width: 100%; height: 300px; overflow: hidden; border-radius: 10px;">
+                    <iframe 
+                        loading="lazy"
+                        style="position: absolute; width: 100%; height: 100%; top: 0; left: 0; border: none;"
+                        src="YOUR_CHART_EMBED_URL_HERE"
+                        allowfullscreen>
+                    </iframe>
+                </div>
+
+                <div class="plant-container">
+                    <img 
+                        src="https://cdn-icons-png.flaticon.com/512/2909/2909763.png"
+                        alt="Healthy Plant"
+                        class="plant-img">
+                </div>
+
+                <p class="health-text">
+                    <span class="plant-text" id="plantHealth">Your plant is --</span>
+                </p>
+
+            </div>
+
+        </div>
+
+
+    </div>
+</div>
+
+</body>
+</html>
