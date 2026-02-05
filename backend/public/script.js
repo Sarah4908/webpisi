@@ -80,7 +80,6 @@ function updateDashboard(data) {
 }
 
 // Function to fetch data from backend
-
 async function fetchDashboardData() {
   try {
     const response = await fetch("/api/dashboard");
@@ -93,11 +92,8 @@ async function fetchDashboardData() {
 }
 
 
-// Fetch data every 3 seconds
-setInterval(fetchDashboardData, 3000);
 
-// Initial load
-fetchDashboardData();
+
 
 
 // Initialize dashboard
@@ -160,5 +156,10 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  
+  // Fetch data every 3 seconds
+setInterval(fetchDashboardData, 3000);
+
+// Initial load
+fetchDashboardData();
 });
+
