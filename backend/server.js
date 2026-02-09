@@ -17,6 +17,9 @@ connectDB();
 //global middleware
 app.use(express.json());
 
+app.set("trust proxy", 1);
+
+
 //session setup
 app.use(
   session({
