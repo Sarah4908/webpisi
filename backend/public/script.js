@@ -1,13 +1,6 @@
 // Dashboard data template
 let dashboardChart;
 
-const dashboardData = {
-  ph: { value: 7.8, status: "Normal", color: "rgb(186, 251, 188)" },
-  temperature: { value: 29, status: "Normal", color: "rgb(186, 251, 188)" },
-  waterLevel: { value: 50, status: "Normal", color: "rgb(186, 251, 188)" },
-  plantHealth: { status: "Healthy 😊", color: "rgb(54, 179, 58)" }
-};
-
 // Store historical data for chart
 const history = {
   ph: [],
@@ -16,6 +9,19 @@ const history = {
   labels: []
 };
 
+
+function showLoading() {
+  document.getElementById("phValue").innerText = "Loading...";
+  document.getElementById("phStatus").innerText = "--";
+
+  document.getElementById("tempValue").innerText = "Loading...";
+  document.getElementById("tempStatus").innerText = "--";
+
+  document.getElementById("waterValue").innerText = "Loading...";
+  document.getElementById("waterStatus").innerText = "--";
+
+  document.getElementById("plantHealth").innerText = "Checking plant health...";
+}
 
 
 // Function to determine status & color based on value
@@ -36,26 +42,51 @@ function getStatus(value, type) {
   }
 }
 
+//update values
+function updateDashboard(data) {
+  document.getElementById("phValue").innerText = data.ph;
+  document.getElementById("tempValue").innerText = data.temperature + " °C";
+  document.getElementById("waterValue").innerText = data.waterLevel + "%";
 
+  document.getElementById("phStatus").innerText =
+    getStatus(data.ph, "ph").status;
+
+  document.getElementById("tempStatus").innerText =
+    getStatus(data.temperature, "temperature").status;
+
+  document.getElementById("waterStatus").innerText =
+    getStatus(data.waterLevel, "waterLevel").status;
+
+  document.getElementById("plantHealth").innerText = "Healthy 😊";
+}
+
+
+
+// Function to update dashboard cards
 function updateChart(data) {
-  const time = new Date().toLocaleTimeString();
+  if (!dashboardChart) return;
+  history.labels = [];
+  history.ph = [];
+  history.temperature = [];
+  history.waterLevel = [];
 
-  history.labels.push(time);
-  history.ph.push(data.ph.value);
-  history.temperature.push(data.temperature.value);
-  history.waterLevel.push(data.waterLevel.value);
+  data.history.forEach(item => {
+    history.labels.push(
+      new Date(item.createdAt).toLocaleTimeString()
+    );
+    history.ph.push(item.ph);
+    history.temperature.push(item.temperature);
+    history.waterLevel.push(item.waterLevel);
+  });
 
-  if (history.labels.length > 10) { // keep last 10 points
-    history.labels.shift();
-    history.ph.shift();
-    history.temperature.shift();
-    history.waterLevel.shift();
-  }
+  dashboardChart.data.datasets[0].borderColor =
+    getStatus(data.current.ph, "ph").color;
 
-  // Update chart line colors dynamically
-  dashboardChart.data.datasets[0].borderColor = getStatus(data.ph.value, "ph").color;
-  dashboardChart.data.datasets[1].borderColor = getStatus(data.temperature.value, "temperature").color;
-  dashboardChart.data.datasets[2].borderColor = getStatus(data.waterLevel.value, "waterLevel").color;
+  dashboardChart.data.datasets[1].borderColor =
+    getStatus(data.current.temperature, "temperature").color;
+
+  dashboardChart.data.datasets[2].borderColor =
+    getStatus(data.current.waterLevel, "waterLevel").color;
 
   dashboardChart.data.labels = history.labels;
   dashboardChart.data.datasets[0].data = history.ph;
@@ -65,48 +96,37 @@ function updateChart(data) {
   dashboardChart.update();
 }
 
-// Function to update dashboard cards
-function updateDashboard(data) {
-  document.getElementById("phValue").innerText = data.ph.value;
-  document.getElementById("phStatus").innerText = data.ph.status;
 
-  document.getElementById("tempValue").innerText = data.temperature.value;
-  document.getElementById("tempStatus").innerText = data.temperature.status;
 
-  document.getElementById("waterValue").innerText = data.waterLevel.value + "%";
-  document.getElementById("waterStatus").innerText = data.waterLevel.status;
-
-  document.getElementById("plantHealth").innerText = data.plantHealth;
-}
 
 // Function to fetch data from backend
 async function fetchDashboardData() {
   try {
     const response = await fetch("/api/dashboard");
-    const data = await response.json();
-    updateDashboard(data);
-    updateChart(data);  // <-- update the chart
+
+    // 🔐 NOT LOGGED IN
+    if (response.redirected) {
+      window.location.href = response.url;
+      return;
+    }
+
+    const result = await response.json();
+    updateDashboard(result.current);
+    updateChart(result);
+
   } catch (error) {
     console.error("Error fetching dashboard data:", error);
   }
 }
 
-
-
-
-
-
 // Initialize dashboard
 document.addEventListener("DOMContentLoaded", () => {
-  // Add initial values to history so chart isn't empty
+  
+  showLoading();
+
+ // Add initial values to history so chart isn't empty
   const time = new Date().toLocaleTimeString();
   history.labels.push(time);
-  history.ph.push(dashboardData.ph.value);
-  history.temperature.push(dashboardData.temperature.value);
-  history.waterLevel.push(dashboardData.waterLevel.value);
-
-  // Initial load of dashboard cards
-  updateDashboard(dashboardData);
 
   // Create chart
   const ctx = document.getElementById('dashboardChart').getContext('2d');
@@ -118,19 +138,19 @@ document.addEventListener("DOMContentLoaded", () => {
         {
           label: 'pH',
           data: history.ph,
-          borderColor: dashboardData.ph.color,
+          borderColor: "#ffff",
           tension: 0.3
         },
         {
           label: 'Temperature (°C)',
           data: history.temperature,
-          borderColor: dashboardData.temperature.color,
+          borderColor: "#ffff",
           tension: 0.3
         },
         {
           label: 'Water Level (%)',
           data: history.waterLevel,
-          borderColor: dashboardData.waterLevel.color,
+          borderColor: "#ffff",
           tension: 0.3
         }
       ]
@@ -140,7 +160,7 @@ document.addEventListener("DOMContentLoaded", () => {
       scales: {
         x: {
           ticks: { color: '#ffff', font: { size: 12 } },
-          title: { display: true, text: 'Time', color: '#ffffff' }
+          title: { display: true, text: 'Time', color: '#ffff' }
         },
         y: {
           beginAtZero: true,
@@ -156,10 +176,19 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // Fetch data every 3 seconds
-setInterval(fetchDashboardData, 3000);
+  document.getElementById("logoutBtn").addEventListener("click", async () => {
+      await fetch("/logout", { method: "POST" });
+      window.location.href = "/login";
+  });
 
-// Initial load
-fetchDashboardData();
+  // Fetch data every 3 seconds
+  setInterval(fetchDashboardData, 3000);
+
+  // Initial load
+  fetchDashboardData();
+  document.getElementById("lastUpdated").innerText =
+    "Last updated: " + new Date().toLocaleTimeString();
+
 });
+
 

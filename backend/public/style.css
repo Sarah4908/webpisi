@@ -75,6 +75,8 @@ body {
     border-radius: 15px;
     padding: 20px;
     box-shadow: 0 10px 20px rgba(0,0,0,0.06);
+    font-size: 14px;
+    opacity: 0.8;
 }
 
 .card h3 {
@@ -83,8 +85,8 @@ body {
 }
 
 .card p {
-    font-size: 23px;
-    font-weight: 500;
+    font-size: 32px;
+    font-weight: 600;
     margin-top: 10px;
 }
 
@@ -186,4 +188,36 @@ iframe {
 .social-icons a:hover {
     color: #cbd2d5;
     transform: scale(1.2);
+}
+
+
+#lastUpdated {
+  opacity: 0.7;
+  font-size: 13px;
+}
+
+.logout-btn {
+  margin-top: auto;
+  padding: 12px 16px;
+  background: linear-gradient(135deg, #367c46, #3c8624);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.3s ease;
+}
+
+.logout-btn:hover {
+  background: linear-gradient(135deg, #073012, #24954a);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.25);
+}
+
+.logout-btn i {
+  font-size: 16px;
 }
