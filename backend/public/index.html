@@ -18,25 +18,31 @@
 <body>
 
 <div class="container">
+    <!-- MOBILE HEADER -->
+    <div class="mobile-header">
+        <h2>AQUASTASIS</h2>
+        <p class="sidebar-subtitle">Real-time Water Monitoring</p>
+        <button id="menuToggle" aria-label="Toggle menu">
+            <i class="fas fa-bars"></i>
+        </button>
+    </div>
+
 
     <!-- SIDEBAR -->
-    <div class="sidebar">
+    <div class="sidebar" id="sidebar">
         <h2>AQUASTASIS</h2>
-        <a class="active">Dashboard</a>
-        <a>Thresholds</a>
-        <a>Reports</a>
-        <a>Settings</a>
-        <!-- SOCIAL ICONS -->
-        <div class="social-icons">
-            <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
-            <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
-            <a href="#" aria-label="Twitter"><i class="fab fa-x-twitter"></i></a>
-        </div>
-        <button id="logoutBtn" class="logout-btn">
-            <i class="fas fa-sign-out-alt"></i> Logout
-        </button>
 
+        <a class="active">
+            <i class="fas fa-chart-line"></i>
+            Dashboard
+        </a>
+
+        <button id="logoutBtn" class="logout-btn">
+            <i class="fas fa-sign-out-alt"></i>
+            Logout
+        </button>
     </div>
+
 
     <!-- MAIN CONTENT -->
     <div class="main">
@@ -78,14 +84,6 @@
             <!-- RIGHT : PLANT HEALTH -->
             <div class="plant-status">
                 <h3 style="font-size: 30px;font-weight: 500;">Plant Health</h3>
-                <div style="position: relative; width: 100%; height: 300px; overflow: hidden; border-radius: 10px;">
-                    <iframe 
-                        loading="lazy"
-                        style="position: absolute; width: 100%; height: 100%; top: 0; left: 0; border: none;"
-                        src="YOUR_CHART_EMBED_URL_HERE"
-                        allowfullscreen>
-                    </iframe>
-                </div>
 
                 <div class="plant-container">
                     <img 

@@ -1,6 +1,10 @@
 // Dashboard data template
 let dashboardChart;
 
+function isMobile() {
+    return window.innerWidth <= 768;
+  }
+
 // Store historical data for chart
 const history = {
   ph: [],
@@ -119,12 +123,30 @@ async function fetchDashboardData() {
   }
 }
 
-// Initialize dashboard
 document.addEventListener("DOMContentLoaded", () => {
-  
+
+  // MOBILE SIDEBAR TOGGLE
+  const menuToggle = document.getElementById("menuToggle");
+  const sidebar = document.getElementById("sidebar");
+
+  if (menuToggle && sidebar) {
+    menuToggle.addEventListener("click", () => {
+      sidebar.classList.toggle("open");
+    });
+
+    // Close sidebar when clicking outside
+    document.addEventListener("click", (e) => {
+      if (!sidebar.classList.contains("open")) return;
+
+      if (!sidebar.contains(e.target) && !menuToggle.contains(e.target)) {
+        sidebar.classList.remove("open");
+      }
+    });
+  }
+
   showLoading();
 
- // Add initial values to history so chart isn't empty
+  // Add initial values to history so chart isn't empty
   const time = new Date().toLocaleTimeString();
   history.labels.push(time);
 
@@ -157,28 +179,54 @@ document.addEventListener("DOMContentLoaded", () => {
     },
     options: {
       responsive: true,
+      maintainAspectRatio: false,
+      layout: {
+        padding: {
+          bottom: isMobile() ? 20 : 30
+        }
+      },
+
       scales: {
         x: {
-          ticks: { color: '#ffff', font: { size: 12 } },
-          title: { display: true, text: 'Time', color: '#ffff' }
+          ticks: {
+            color: '#ffff',
+            font: { size: isMobile() ? 9 : 12 },
+            maxTicksLimit: isMobile() ? 4 : 10
+          },
+          title: {
+            display: !isMobile(),
+            text: 'Time',
+            color: '#ffff'
+          }
         },
         y: {
           beginAtZero: true,
-          ticks: { color: '#ffff', font: { size: 12 } },
-          title: { display: true, text: 'Sensor Values', color: '#ffffff' }
+          ticks: {
+            color: '#ffff',
+            font: { size: isMobile() ? 9 : 12 }
+          },
+          title: {
+            display: !isMobile(),
+            text: 'Sensor Values',
+            color: '#ffffff'
+          }
         }
       },
       plugins: {
         legend: {
-          labels: { color: '#ffffff', font: { size: 13 } }
+          display: !isMobile(),
+          labels: {
+            color: '#ffffff',
+            font: { size: 13 }
+          }
         }
       }
     }
   });
 
   document.getElementById("logoutBtn").addEventListener("click", async () => {
-      await fetch("/logout", { method: "POST" });
-      window.location.href = "/login";
+    await fetch("/logout", { method: "POST" });
+    window.location.href = "/login";
   });
 
   // Fetch data every 3 seconds
@@ -190,5 +238,7 @@ document.addEventListener("DOMContentLoaded", () => {
     "Last updated: " + new Date().toLocaleTimeString();
 
 });
+
+
 
 
