@@ -18,3 +18,8 @@ document.getElementById("loginForm").addEventListener("submit", async (e) => {
     document.getElementById("msg").innerText = data.message;
   }
 });
+
+
+window.addEventListener("load", () => {
+  document.body.classList.add("loaded");
+});
