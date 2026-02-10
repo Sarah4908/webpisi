@@ -50,3 +50,26 @@ The application is deployed and accessible here:
 6. Open the application in your browser
      ```arduino
    http://localhost:3000
+
+## 🧠 Design Decisions
+
+### Why session-based authentication?
+This project uses **session-based authentication** (`express-session`) instead of JWT to focus on backend fundamentals such as:
+- server-side session handling
+- protected routes
+- authentication flow using cookies
+
+Session-based auth is well-suited for dashboard-style applications where the server maintains user state.
+
+### Why a minimal frontend?
+The frontend is intentionally kept simple to highlight backend logic rather than UI complexity.
+The focus is on:
+- authentication and authorization
+- MongoDB data modelling and queries
+- periodic data fetching for the dashboard
+
+The dashboard is responsive and mobile-friendly, but avoids unnecessary UI features.
+
+### Project structure choice
+The frontend is served using **Express static files (`public/`)** to keep the architecture lightweight and easy to deploy.
+An initial experiment with a separate Next.js frontend was removed to simplify the project and maintain a clear backend-first focus.
