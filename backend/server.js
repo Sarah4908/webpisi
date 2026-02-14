@@ -9,6 +9,18 @@ const session = require("express-session");
 const connectDB = require("./config/db");
 const User = require("./models/user");
 const SensorData = require("./models/SensorData");
+const RedisStore = require("connect-redis").default;
+const { createClient } = require("redis");
+
+const redisClient = createClient({
+  url: process.env.REDIS_URL,
+});
+
+redisClient.on("error", (err) =>
+  console.log("Redis Client Error", err)
+);
+
+redisClient.connect();
 
 
 //db
@@ -23,11 +35,19 @@ app.set("trust proxy", 1);
 //session setup
 app.use(
   session({
+    store: new RedisStore({ client: redisClient }),
     secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: false,
+    cookie: {
+      httpOnly: true,
+      secure: true,     
+      sameSite: "lax",
+      maxAge: 1000 * 60 * 60 * 24,
+    },
   })
 );
+
 
 //static files(frontend) served to browser
 app.use(express.static(path.join(__dirname, "public")));
@@ -44,6 +64,7 @@ app.post("/register", async (req, res) => {
     const { name, email, password } = req.body;
 
     // basic validation
+     
     if (!name || !email || !password) {
       return res.status(400).json({ message: "All fields are required" });
     }
