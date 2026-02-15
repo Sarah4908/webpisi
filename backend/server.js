@@ -22,8 +22,6 @@ redisClient.on("error", (err) =>
 
 redisClient.connect();
 
-console.log("REDIS_URL FROM RENDER:", process.env.REDIS_URL);
-
 //db
 connectDB();
 
