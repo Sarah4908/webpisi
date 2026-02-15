@@ -13,10 +13,7 @@ const { createClient } = require("redis");
 const { RedisStore } = require("connect-redis");
 
 const redisClient = createClient({
-  url: process.env.REDIS_URL,
-  socket: {
-    tls: true
-  }
+  url: process.env.REDIS_URL
 });
 
 redisClient.on("error", (err) =>
