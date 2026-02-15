@@ -9,8 +9,8 @@ const session = require("express-session");
 const connectDB = require("./config/db");
 const User = require("./models/user");
 const SensorData = require("./models/SensorData");
-const RedisStore = require("connect-redis").default;
 const { createClient } = require("redis");
+const { RedisStore } = require("connect-redis");
 
 const redisClient = createClient({
   url: process.env.REDIS_URL,
@@ -47,6 +47,7 @@ app.use(
     },
   })
 );
+
 
 
 //static files(frontend) served to browser
