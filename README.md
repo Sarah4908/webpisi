@@ -3,11 +3,11 @@
 WebPisi is a beginner-friendly full-stack web application built using Node.js, Express, and MongoDB.  
 It focuses on backend fundamentals such as authentication, session management, and database operations, with a simple frontend for interaction.
 
-## 🌐 Live Demo
+##  Live Demo
 The application is deployed and accessible here:  
-👉 https://webpisi.onrender.com/
+ https://webpisi.onrender.com/
 
-## 🚀 Features
+##  Features
   - User registration and login
   - Password hashing using bcrypt
   - Session-based authentication using  express-session
@@ -19,7 +19,7 @@ The application is deployed and accessible here:
   - Sensor-style data generation and storage
   - Dashboard API returning current and historical data
 
-## 🛠️ Tech Stack
+##  Tech Stack
 - Node.js
 - Express.js
 - MongoDB
@@ -28,13 +28,13 @@ The application is deployed and accessible here:
 - connect-redis
 - HTML, CSS, JavaScript
 
-## 📂 Project Structure
+##  Project Structure
 - `config/db.js` – MongoDB connection logic  
 - `models/` – Mongoose schemas (`User`, `SensorData`)  
 - `public/` – Frontend files (HTML, CSS, JS)  
 - `server.js` – Express server and route definitions  
 
-## ▶️ How to Run Locally
+##  How to Run Locally
 1. Clone the repository
     ```bash
    git clone https://github.com/Sarah4908/webpisi.git
@@ -56,7 +56,7 @@ The application is deployed and accessible here:
      ```arduino
    http://localhost:3000
 
-## 🧠 Design Decisions
+##  Design Decisions
 
 ### Session-Based Authentication
 
